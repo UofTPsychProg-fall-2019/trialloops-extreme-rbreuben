@@ -29,7 +29,8 @@ subgui.show()
 subjID = subgui.data[0]
 sessNum = subgui.data[1]
 
-ouputFileName = 'data' + os.sep + 'sub' + subjID + '_sess' + sessNum + '_feedback.csv'
+ouputFileName = 'data' + os.sep + 'sub' + subjID + '_sess' + sessNum + '_wordlistoutput.csv'
+
 if os.path.isfile(ouputFileName) :
     sys.exit("data for this session already exists")
 
@@ -147,6 +148,13 @@ for thisTrial in np.arange(0,nTrials):
     out.loc[thisTrial,'trial'] = thisTrial + 1
     
     # save responses, if made
+    if trialResp=='f' and trialInfo.loc[thisTrial,'group']=='f':
+        out.loc[thisTrial, 'accuracy'] = '1'
+    elif trialResp=='j' and trialInfo.loc[thisTrial,'group']=='j':
+        out.loc[thisTrial, 'accuracy'] = '1'
+    else:
+        out.loc[thisTrial, 'accuracy'] = '0'
+    
     if trialResp != None: 
         out.loc[thisTrial, 'response'] = trialResp
         out.loc[thisTrial, 'rt'] = trialRT
@@ -159,7 +167,7 @@ core.wait(1)
 
 # manage output
 out['subj'] = subjID
-out.to_csv('wordlist_output.csv', index = False)
+out.to_csv(subjID + '_wordlistoutput.csv', index = False)
 
 core.wait(3)
 
